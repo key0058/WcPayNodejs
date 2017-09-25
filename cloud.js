@@ -1,13 +1,5 @@
 var AV = require('leanengine');
 
-/**
- * 一个简单的云代码方法
- */
-AV.Cloud.define('hello', function(request) {
-  return testHello("tom");
-});
-
-
 AV.Cloud.define('createPayment', function(request) {
 	
     var data = new Date();
@@ -69,39 +61,18 @@ AV.Cloud.define('createPayment', function(request) {
     var xml = builder.buildObject(result);
     
     
-    var requestPromise = require("request-promise");
-    var options = {
-        method: "POST",
-        uri: "https://api.mch.weixin.qq.com/pay/unifiedorder",
-        body: xml,
-        json: true
-    };
-    
-    requestPromise(options)
-      .then(function(parsedBody) {
-          console.log("+++1+++" + parsedBody);
-          responseBody(parsedBody);
-          //return parsedBody;
-        
-      })
-      .catch(function(error) {
-          console.log("+++2+++" + error);
-      });
-    
-    var responseBody = function(body) {
-        console.log("++++end++++" + body);
-        return body;
-    };
+	var http = require("http");	
+	http.get('http://www.gongjuji.net',function(req,res){  
+		var html='';  
+		req.on('data',function(data){  
+			html+=data;  
+		});  
+		req.on('end',function(){  
+			console.info(html);  
+			return html;
+		});  
+	});  
     
 });
 
-
-function testHello(name) {
-	console.log("heloo " + name);
-	return name;
-}
-
-function create() {
-	
-}
 
