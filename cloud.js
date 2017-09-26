@@ -1,6 +1,7 @@
 var AV = require('leanengine');
 
-AV.Cloud.define('createPayment', function(request) {
+
+AV.Cloud.define('createWechatPayment', function(request, response) {
 	
     var data = new Date();
     
@@ -61,16 +62,16 @@ AV.Cloud.define('createPayment', function(request) {
     var xml = builder.buildObject(result);
     
     
-	var http = require("http");	
-	http.get('http://www.gongjuji.net',function(req,res){  
-		var html='';  
-		req.on('data',function(data){  
-			html+=data;  
-		});  
-		req.on('end',function(){  
-			console.info(html);  
-			return html;
-		});  
+	var httpRequest = require("request");	
+	var options = {
+		method: "POST",
+		uri: "https://api.mch.weixin.qq.com/pay/unifiedorder",
+		body: xml,
+		json: true
+	};
+	httpRequest(options, function(error, res, body){  
+		console.log("+++1+++" + body);
+		response.success(body);
 	});  
     
 });
