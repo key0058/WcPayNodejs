@@ -38,7 +38,7 @@ AV.Cloud.define('createWechatPayment', function(request, response) {
     tempSign = tempSign + "&openid=" + openId + "&out_trade_no=" + outTradeNo + "&spbill_create_ip=" + spBillCreateIp + "&total_fee=" + totalFee + "&trade_type=" + tradeType;
     tempSign = tempSign + "&key=" + key;
     
-    sign = crypto.createHash('md5').update(tempSign).digest('hex').toUpperCase();
+	md5.update(tempSign);
     sign = crypto.createHash('md5').update(tempSign).digest('hex').toUpperCase();
     
     var tempXml = {
@@ -74,6 +74,7 @@ AV.Cloud.define('createWechatPayment', function(request, response) {
 		xml2js.parseString(res.body, {explicitArray : false}, function(err, json) {
 			var result = JSON.parse(JSON.stringify(json));
 			if (result.xml.return_code = 'SUCCESS') {
+				console.log("Response body: " + body);
 				console.log("Create payment id[" + result.xml.prepay_id + "]");
 				response.success({"prepayId": result.xml.prepay_id});
 			} else {
