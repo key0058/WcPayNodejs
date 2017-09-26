@@ -41,7 +41,7 @@ AV.Cloud.define('createWechatPayment', function(request, response) {
     sign = crypto.createHash('md5').update(tempSign).digest('hex').toUpperCase();
     sign = crypto.createHash('md5').update(tempSign).digest('hex').toUpperCase();
     
-    var result = {
+    var tempXml = {
         xml: {
             appid: appId,
             body: body,
@@ -59,8 +59,9 @@ AV.Cloud.define('createWechatPayment', function(request, response) {
     }
     
     var builder = new xml2js.Builder();
-    var xml = builder.buildObject(result);
+    var xml = builder.buildObject(tempXml);
     
+	console.log("XML content: " + xml);
     
 	var httpRequest = require("request");	
 	var options = {
@@ -70,8 +71,15 @@ AV.Cloud.define('createWechatPayment', function(request, response) {
 		json: true
 	};
 	httpRequest(options, function(error, res, body){  
-		console.log("+++1+++" + body);
-		response.success(body);
+		xml2js.parseString(res.body, {explicitArray : false}, function(err, json) {
+			var result = JSON.parse(JSON.stringify(json));
+			if (result.xml.return_code = 'SUCCESS') {
+				console.log("Create payment id[" + result.xml.prepay_id + "]");
+				response.success({"prepayId": result.xml.prepay_id});
+			} else {
+				response.success('ERROR: ' + result);
+			}
+		});
 	});  
     
 });
