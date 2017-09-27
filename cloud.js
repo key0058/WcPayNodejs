@@ -19,7 +19,7 @@ AV.Cloud.define('createWechatPayment', function(request, response) {
     var totalFee = request.params.totalFee;
     var timeExpire = '';
     var goodsTag = '';
-    var notifyUrl = '';
+    var notifyUrl = 'https://leancloud.cn/playback';
     var tradeType = 'JSAPI';
     var productId = '';
     var limitPay = '';
@@ -37,7 +37,9 @@ AV.Cloud.define('createWechatPayment', function(request, response) {
     tempSign = tempSign + "&mch_id=" + mchId + "&nonce_str=" + nonceStr + "&notify_url=" + notifyUrl;
     tempSign = tempSign + "&openid=" + openId + "&out_trade_no=" + outTradeNo + "&spbill_create_ip=" + spBillCreateIp + "&total_fee=" + totalFee + "&trade_type=" + tradeType;
     tempSign = tempSign + "&key=" + key;
-    
+	
+    console.log(tempSign);
+	
 	md5.update(tempSign);
     sign = crypto.createHash('md5').update(tempSign).digest('hex').toUpperCase();
     
