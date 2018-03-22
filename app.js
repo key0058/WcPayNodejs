@@ -9,10 +9,6 @@ var AV = require('leanengine');
 
 var app = express();
 
-// HTTPS Redirect
-app.enable('trust proxy');
-app.use(AV.Cloud.HttpsRedirect());
-
 // 设置模板引擎
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -29,6 +25,11 @@ app.use(AV.express());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
+
+// HTTPS Redirect
+app.enable('trust proxy');
+app.use(AV.Cloud.HttpsRedirect());
+
 
 app.get('/', function(req, res) {
   res.render('index', { currentTime: new Date() });
