@@ -18,7 +18,7 @@ router.get('/pay-test', wxpay.useWXCallback((msg, req, res, next) => {
 
 // 微信支付成功通知
 router.post('/pay-callback', wxpay.useWXCallback((msg, req, res, next) => {
-  console.log("+++++ wechat pay call back!");
+  console.log("+++++ Wechat pay call back!");
   // 处理商户业务逻辑
   validateSign(msg);
   const {
